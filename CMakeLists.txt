@@ -1,0 +1,63 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
+
+# Set default parameters
+PROJECT(GBenchPilot CXX)
+
+SET(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Set compiler flags for different build types
+IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wall -Wextra -pedantic")
+ELSE()
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wextra -pedantic")
+ENDIF()
+
+MESSAGE(STATUS "C++ Compiler Flags:${CMAKE_CXX_FLAGS}")
+
+SET(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+SET(UNIT_TEST_DIR ${CMAKE_SOURCE_DIR}/test/unit)
+SET(INC_DIR ${CMAKE_SOURCE_DIR}/include)
+SET(BENCHMARK_DIR ${CMAKE_SOURCE_DIR}/test/benchmarks)
+
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/libs)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin/Debug)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/Release)
+
+# Google Benchmark (downloaded at configure time)
+INCLUDE(FetchContent)
+SET(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+SET(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
+SET(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    googlebenchmark
+    GIT_REPOSITORY https://github.com/google/benchmark.git
+    GIT_TAG v1.9.5
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(googlebenchmark)
+
+# Library code = everything in src/ except main.cc
+AUX_SOURCE_DIRECTORY(${SRC_DIR} PROGRAM)
+LIST(FILTER PROGRAM EXCLUDE REGEX ".*/main\\.cc$")
+AUX_SOURCE_DIRECTORY(${UNIT_TEST_DIR} UNIT_TESTS)
+AUX_SOURCE_DIRECTORY(${BENCHMARK_DIR} BENCHMARKS)
+
+INCLUDE_DIRECTORIES(${INC_DIR})
+INCLUDE_DIRECTORIES(${INC_DIR}/lib)
+
+# Define the program lib
+ADD_LIBRARY(searchlib ${PROGRAM})
+
+# Make executables
+ADD_EXECUTABLE(program ${SRC_DIR}/main.cc)
+ADD_EXECUTABLE(unit_test ${UNIT_TESTS})
+ADD_EXECUTABLE(benchmarks ${BENCHMARKS})
+
+# Link libs
+TARGET_LINK_LIBRARIES(program searchlib)
+TARGET_LINK_LIBRARIES(unit_test searchlib)
+TARGET_LINK_LIBRARIES(benchmarks searchlib benchmark::benchmark benchmark::benchmark_main)

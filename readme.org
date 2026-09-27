@@ -1,0 +1,33 @@
+* GBENCH_PILOT
+
+Piloto de uso do [[https://github.com/google/benchmark][Google Benchmark]] (v1.9.5) sobre uma pequena
+biblioteca de busca (=include/search.h=)
+
+** O que é medido
+- =test/benchmarks/bm_search.cc=: busca linear x binária x binária branchless x =unordered_set=
+  (ranges, =Complexity()=, fixture, counter customizado)
+- =test/benchmarks/bm_pitfalls.cc=: =DoNotOptimize=, =vector= x =list= (=BENCHMARK_TEMPLATE=),
+  =PauseTiming= em sort
+
+** Como rodar
+#+begin_src sh
+./run -t                                   # testes unitários (doctest)
+./run -B                                   # todos os benchmarks (Release)
+./run -B -x --benchmark_filter=Search      # só as buscas
+
+# medição "séria": fixa em um core, repete e salva JSON
+taskset -c 2 ./bin/Release/benchmarks --benchmark_repetitions=10 \
+    --benchmark_report_aggregates_only=true \
+    --benchmark_out=results/run.json --benchmark_out_format=json
+
+# comparar duas implementações (A/B) com teste estatístico
+python3 -m venv .venv && .venv/bin/pip install -r build/Release/_deps/googlebenchmark-src/tools/requirements.txt
+.venv/bin/python build/Release/_deps/googlebenchmark-src/tools/compare.py benchmarksfiltered \
+    results/v2_branchless.json BM_BinarySearch results/v2_branchless.json BM_BranchlessBinarySearch
+#+end_src
+
+** Resultados salvos (Ryzen 5 5600X, g++ 15.2, -O3)
+- =results/v0_predictable_queries.json=: 1ª versão, só N queries -> preditor de desvios "decorava" o padrão
+- =results/v1_baseline.json=: suíte completa com 65536 queries
+- =results/v2_branchless.json= / =v2_compare.txt=: binária x branchless (~4.4x mais rápida, p=0.0002)
+- =results/summary.json=: medianas usadas nos slides

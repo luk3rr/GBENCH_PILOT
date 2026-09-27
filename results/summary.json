@@ -1,0 +1,173 @@
+{
+ "N": [
+  16,
+  64,
+  256,
+  1024,
+  4096,
+  16384,
+  65536
+ ],
+ "linear": [
+  8.32,
+  18.89,
+  52.01,
+  180.38,
+  714.23,
+  2738.4,
+  10911.94
+ ],
+ "binary": [
+  15.62,
+  22.65,
+  29.85,
+  37.52,
+  44.33,
+  56.34,
+  69.24
+ ],
+ "branchless": [
+  3.69,
+  4.72,
+  6.06,
+  7.44,
+  9.31,
+  13.91,
+  19.49
+ ],
+ "hash": [
+  8.01,
+  7.59,
+  8.9,
+  9.29,
+  9.93,
+  11.32,
+  12.34
+ ],
+ "binary_predictable": [
+  3.56,
+  5.03,
+  8.12,
+  9.72,
+  38.32,
+  55.64,
+  70.58
+ ],
+ "accN": [
+  1024,
+  4096,
+  32768,
+  262144,
+  1048576
+ ],
+ "vec": [
+  115.92,
+  449.27,
+  3566.59,
+  30201.54,
+  119223.75
+ ],
+ "list": [
+  1053.26,
+  4076.54,
+  33232.06,
+  262636.43,
+  1344530.54
+ ],
+ "sum_no": 0.0,
+ "sum_yes": 24319.14,
+ "bigo": {
+  "BM_SortWithPause_BigO": [
+   2.3218864042561673,
+   "NlgN",
+   null
+  ],
+  "BM_SortWithPause_RMS": [
+   null,
+   null,
+   0.016760563488550158
+  ],
+  "BM_LinearSearch_BigO": [
+   0.16633391327332325,
+   "N",
+   null
+  ],
+  "BM_LinearSearch_RMS": [
+   null,
+   null,
+   0.01693304249105667
+  ],
+  "BM_BinarySearch_BigO": [
+   3.996462375764559,
+   "lgN",
+   null
+  ],
+  "BM_BinarySearch_RMS": [
+   null,
+   null,
+   0.0702901187334383
+  ],
+  "HashFixture/BM_HashLookup_BigO": [
+   9.617550508213082,
+   "(1)",
+   null
+  ],
+  "HashFixture/BM_HashLookup_RMS": [
+   null,
+   null,
+   0.1652861583026456
+  ],
+  "BM_BranchlessBinarySearch_BigO": [
+   0.9691768793291147,
+   "lgN",
+   null
+  ],
+  "BM_BranchlessBinarySearch_RMS": [
+   null,
+   null,
+   0.22739531926848452
+  ]
+ },
+ "bigo_v0": {
+  "BM_SortWithPause_BigO": [
+   2.3397208256652635,
+   "NlgN",
+   null
+  ],
+  "BM_SortWithPause_RMS": [
+   null,
+   null,
+   0.02875926023840299
+  ],
+  "BM_LinearSearch_BigO": [
+   0.19492226410939162,
+   "N",
+   null
+  ],
+  "BM_LinearSearch_RMS": [
+   null,
+   null,
+   0.18827482153442324
+  ],
+  "BM_BinarySearch_BigO": [
+   3.17371820287861,
+   "lgN",
+   null
+  ],
+  "BM_BinarySearch_RMS": [
+   null,
+   null,
+   0.547420291136825
+  ],
+  "HashFixture/BM_HashLookup_BigO": [
+   5.290759776601283,
+   "(1)",
+   null
+  ],
+  "HashFixture/BM_HashLookup_RMS": [
+   null,
+   null,
+   0.5840692604384933
+  ]
+ }
+}

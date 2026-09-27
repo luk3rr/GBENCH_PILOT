@@ -1,0 +1,26 @@
+# EditorConfig
+#
+# This file configures indentation styles for source files in
+# supporting editors.
+#
+# See https://editorconfig.org/ for more.
+
+# Do not search for additional .editorconfig files above this
+# directory.
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[Makefile]
+indent_style = tab
+tab_width = 4
+
+[*.{cc,h}]
+type = "cpp"
+
+[*.{cc,h}]
+indent_style = space
+indent_size = 4
